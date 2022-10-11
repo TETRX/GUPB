@@ -1,16 +1,16 @@
-from gupb.controller import keyboard
+from gupb.controller import keyboard, aleph_aleph_zero
 from gupb.controller import random
+from gupb.controller.aleph_aleph_zero import aleph_aleph_zero_rl
 
 CONFIGURATION = {
     'arenas': [
-        'fisher_island',
+        'lone_sanctum',
     ],
     'controllers': [
-        keyboard.KeyboardController(),
-        random.RandomController("Alice"),
-        random.RandomController("Bob"),
-        random.RandomController("Cecilia"),
-        random.RandomController("Darius"),
+        aleph_aleph_zero_rl.AlephAlephZeroBotRL("A"),
+        aleph_aleph_zero_rl.AlephAlephZeroBotRL("B"),
+        aleph_aleph_zero_rl.AlephAlephZeroBotRL("C"),
+        aleph_aleph_zero_rl.AlephAlephZeroBotRL("D"),
     ],
     'start_balancing': False,
     'visualise': True,
@@ -18,4 +18,5 @@ CONFIGURATION = {
     'runs_no': 5,
     'profiling_metrics': [],
 }
+
 
