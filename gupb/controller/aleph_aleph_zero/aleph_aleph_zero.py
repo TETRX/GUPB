@@ -1,3 +1,4 @@
+import json
 import random
 from copy import copy
 
@@ -39,6 +40,7 @@ class AlephAlephZeroBot(controller.Controller):
         LootHide,
         LootConquer
     )
+    printed_headers = False
 
     def __init__(self, first_name: str):
         self.first_name: str = first_name
@@ -58,6 +60,11 @@ class AlephAlephZeroBot(controller.Controller):
 
         self.rewards_dict = dict()
 
+        if not AlephAlephZeroBot.printed_headers:
+            for cls in AlephAlephZeroBot.HLSs:
+                print(cls.__name__, end=', ')
+            print("reward")
+            AlephAlephZeroBot.printed_headers = True
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, AlephAlephZeroBot):
@@ -176,6 +183,10 @@ class AlephAlephZeroBot(controller.Controller):
         self.rewards_dict[self.map_name][type(self.high_level_strategy)]["reward_estimate"] = score/(n+1)+(n*self.rewards_dict[self.map_name][type(self.high_level_strategy)]["reward_estimate"])/(n+1)
         self.rewards_dict[self.map_name][type(self.high_level_strategy)]["n"] = n+1
 
+        for hls in AlephAlephZeroBot.HLSs:
+            print(self.rewards_dict[self.map_name][hls]["reward_estimate"], end=', ')
+        print(score)
+
     def _choose_hls(self, map_name, epsilon=0.15):
         if random.uniform(0,1)<epsilon:  # take random
             return random.choice(AlephAlephZeroBot.HLSs)(self)
@@ -211,6 +222,7 @@ class AlephAlephZeroBot(controller.Controller):
         self.map_name = arena_description.name
         if self.map_name not in self.rewards_dict.keys():
             self.rewards_dict[self.map_name] = {hls:{"reward_estimate": 0, "n": 0} for hls in AlephAlephZeroBot.HLSs}
+
 
         self.high_level_strategy = self._choose_hls(arena_description.name)
 
